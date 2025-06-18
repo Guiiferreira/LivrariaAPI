@@ -91,21 +91,22 @@ class LivroRepositoryTest {
         lista.forEach(System.out::println);
     }
 
-    @Test
-    public void deleteTest() {
-        var id = UUID.fromString("");
-        var maria = livroRepository.findById(id).get();
-        livroRepository.delete(maria);
-    }
-    @Test
-    public void deletePorIdTest() {
-        var id = UUID.fromString("92fa3534-494a-4f90-8a0b-a99cf9f4c325");
-        livroRepository.deleteById(id);
-    }
+//    @Test
+//    public void deleteTest() {
+//        var id = UUID.fromString("");
+//        var maria = livroRepository.findById(id).get();
+//        livroRepository.delete(maria);
+//    }
+//
+//    @Test
+//    public void deletePorIdTest() {
+//        var id = UUID.fromString("92fa3534-494a-4f90-8a0b-a99cf9f4c325");
+//        livroRepository.deleteById(id);
+  //  }
 
 
     @Test
-    void autualizarAutorDoLivro(){
+    void autualizarAutorDoLivro() {
         UUID id = UUID.fromString("fec95948-89be-47b0-b4bb-26c68e1857d0");
         var livroParaAtualizar = livroRepository.findById(id).orElse(null);
 
@@ -116,4 +117,17 @@ class LivroRepositoryTest {
 
         livroRepository.save(livroParaAtualizar);
     }
+
+
+    @Test
+    void deletar() {
+        var id = UUID.fromString("7c884a6e-b0de-4207-b00b-11a825bf4979");
+        livroRepository.deleteById(id);
+    }
+    @Test
+    void deletarCascade() {
+        var id = UUID.fromString("fec95948-89be-47b0-b4bb-26c68e1857d0");
+        livroRepository.deleteById(id);
+    }
+
 }
