@@ -1,11 +1,15 @@
 package com.guilhermeferreira.livrariaapi.repository;
 
 import com.guilhermeferreira.livrariaapi.model.Autor;
+import com.guilhermeferreira.livrariaapi.model.GeneroLivro;
+import com.guilhermeferreira.livrariaapi.model.Livro;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,6 +20,9 @@ public class AutorRepositoryTest {
 
     @Autowired
     AutorRepository repository;
+
+    @Autowired
+    LivroRepository livroRepository;
 
     @Test
     public void salvarTeste() {
@@ -59,7 +66,7 @@ public class AutorRepositoryTest {
 
         @Test
         public void deletePorIdTest(){
-            var id = UUID.fromString("771a1c14-95b9-4955-9300-ea05019921d8");
+            var id = UUID.fromString("930972e2-e45e-4ce1-82b1-e4f949bd6aff");
             repository.deleteById(id);
         }
          @Test
@@ -69,4 +76,40 @@ public class AutorRepositoryTest {
         repository.delete(maria);
     }
 
-    }
+
+        @Test
+        void salvarAutorComLivrosTest() {
+            Autor autor = new Autor();
+            autor.setNome("erik");
+            autor.setNacionalidade("Americana");
+            autor.setDataNascimento(LocalDate.of(1996, 8, 5));
+
+
+            Livro livro = new Livro();
+            livro.setIsbn("20847-84874");
+            livro.setPreco(BigDecimal.valueOf(204));
+            livro.setGenero(GeneroLivro.MISTERIO);
+            livro.setTitulo("O roubo da casa assombrada");
+            livro.setDataPublicacao(LocalDate.of(1999, 1, 2));
+            livro.setAutor(autor);
+
+            Livro livro2 = new Livro();
+            livro2.setIsbn("99999-84874");
+            livro2.setPreco(BigDecimal.valueOf(650));
+            livro2.setGenero(GeneroLivro.MISTERIO);
+            livro2.setTitulo("novo livro ");
+            livro2.setDataPublicacao(LocalDate.of(2000, 1, 2));
+            livro2.setAutor(autor);
+
+            autor.setLivros(new ArrayList<>());
+            autor.getLivros().add(livro);
+            autor.getLivros().add(livro2);
+
+            repository.save(autor);
+
+         //livroRepository.saveAll(autor.getLivros());
+
+
+        }
+
+}
