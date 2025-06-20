@@ -3,10 +3,12 @@ package com.guilhermeferreira.livrariaapi.repository;
 import com.guilhermeferreira.livrariaapi.model.Autor;
 import com.guilhermeferreira.livrariaapi.model.GeneroLivro;
 import com.guilhermeferreira.livrariaapi.model.Livro;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.xml.transform.sax.SAXSource;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -111,5 +113,22 @@ public class AutorRepositoryTest {
 
 
         }
+
+        @Test
+       // @Transactional
+        void listarLivrosAutor(){
+        var id = UUID.fromString("67b7cf65-9f63-46f7-863d-bfdea369952f");
+        var autor = repository.findById(id).get();
+
+        //BUSCAR OS LIVROS DO AUTOR
+
+            List<Livro> livrosListas = livroRepository.findByAutor(autor);
+            autor.setLivros(livrosListas);
+
+            autor.getLivros().forEach(System.out::println);
+        }
+
+    
+    
 
 }
