@@ -15,11 +15,11 @@ public class TransacoesTest {
 
 
     /**
-     *  commit = confirmar as alteraçoes
-     *  rollback = desfazer as alterações
+     * commit = confirmar as alteraçoes
+     * rollback = desfazer as alterações
      */
     @Test
-    void transacaoSimples(){
+    void transacaoSimples() {
 
         transacaoService.executar();
 //                salvar um livro
@@ -31,4 +31,10 @@ public class TransacoesTest {
 
     }
 
+    @Test
+    void transacaoEstadoManaged() {
+
+        transacaoService.atualizarSemAtualizar();
+
+    }
 }
