@@ -162,4 +162,33 @@ class LivroRepositoryTest {
         List<Livro> lista = livroRepository.findByTituloAndPreco(tituloPesquisa, preco);
         lista.forEach(System.out::println);
     }
+
+    @Test
+    void listarLivrosComQueryJPQL(){
+    var resultado = livroRepository.listarTodosOrdernadoPorTituloAndPreco();
+    resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarAutoresDosLivros(){
+    var resultado = livroRepository.listarAutoresDosLivros();
+    resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarTitulosNaoRepetidosDosLivros(){
+    var resultado = livroRepository.listarNomesDiferentesLivros();
+    resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarGenerosDeAutoresBrasileiros(){
+    var resultado = livroRepository.listarGenerosAutoresBrasileiros();
+    resultado.forEach(System.out::println);
+    }
+
+
+
+
+
 }
