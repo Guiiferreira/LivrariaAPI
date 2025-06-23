@@ -103,7 +103,7 @@ class LivroRepositoryTest {
 //    public void deletePorIdTest() {
 //        var id = UUID.fromString("92fa3534-494a-4f90-8a0b-a99cf9f4c325");
 //        livroRepository.deleteById(id);
-  //  }
+    //  }
 
 
     @Test
@@ -125,6 +125,7 @@ class LivroRepositoryTest {
         var id = UUID.fromString("7c884a6e-b0de-4207-b00b-11a825bf4979");
         livroRepository.deleteById(id);
     }
+
     @Test
     void deletarCascade() {
         var id = UUID.fromString("fec95948-89be-47b0-b4bb-26c68e1857d0");
@@ -134,7 +135,7 @@ class LivroRepositoryTest {
 
     @Test
     @Transactional
-    void buscarLivroTest(){
+    void buscarLivroTest() {
         UUID id = UUID.fromString("382c10ae-7288-4460-bd2b-140e6df6a419");
         Livro livro = livroRepository.findById(id).orElse(null);
         System.out.println("Nome do livro:");
@@ -145,50 +146,58 @@ class LivroRepositoryTest {
 
 
     @Test
-    void pesquisarPorTituloTest(){
+    void pesquisarPorTituloTest() {
         List<Livro> lista = livroRepository.findByTitulo("O roubo da casa assombrada");
         lista.forEach(System.out::println);
     }
-      @Test
-    void pesquisarPorISBNTest(){
+
+    @Test
+    void pesquisarPorISBNTest() {
         List<Livro> lista = livroRepository.findByIsbn("20847-84874");
         lista.forEach(System.out::println);
     }
+
     @Test
-    void pesquisarPorTituloEPrecoTest(){
+    void pesquisarPorTituloEPrecoTest() {
         var preco = BigDecimal.valueOf(204.00);
-        var  tituloPesquisa = "O roubo da casa assombrada";
+        var tituloPesquisa = "O roubo da casa assombrada";
 
         List<Livro> lista = livroRepository.findByTituloAndPreco(tituloPesquisa, preco);
         lista.forEach(System.out::println);
     }
 
     @Test
-    void listarLivrosComQueryJPQL(){
-    var resultado = livroRepository.listarTodosOrdernadoPorTituloAndPreco();
-    resultado.forEach(System.out::println);
+    void listarLivrosComQueryJPQL() {
+        var resultado = livroRepository.listarTodosOrdernadoPorTituloAndPreco();
+        resultado.forEach(System.out::println);
     }
 
     @Test
-    void listarAutoresDosLivros(){
-    var resultado = livroRepository.listarAutoresDosLivros();
-    resultado.forEach(System.out::println);
+    void listarAutoresDosLivros() {
+        var resultado = livroRepository.listarAutoresDosLivros();
+        resultado.forEach(System.out::println);
     }
 
     @Test
-    void listarTitulosNaoRepetidosDosLivros(){
-    var resultado = livroRepository.listarNomesDiferentesLivros();
-    resultado.forEach(System.out::println);
+    void listarTitulosNaoRepetidosDosLivros() {
+        var resultado = livroRepository.listarNomesDiferentesLivros();
+        resultado.forEach(System.out::println);
     }
 
     @Test
-    void listarGenerosDeAutoresBrasileiros(){
-    var resultado = livroRepository.listarGenerosAutoresBrasileiros();
-    resultado.forEach(System.out::println);
+    void listarGenerosDeAutoresBrasileiros() {
+        var resultado = livroRepository.listarGenerosAutoresBrasileiros();
+        resultado.forEach(System.out::println);
     }
 
-
-
-
-
+    @Test
+    void listarPorGenreoQueryParamTest(){
+        var resultado = livroRepository.findByGenero(GeneroLivro.MISTERIO, "preco");
+         resultado.forEach(System.out::println);
+    }
+    @Test
+    void listarPorGenreoPositionalParamTest(){
+        var resultado = livroRepository.findByGeneroPositionalParameters(GeneroLivro.MISTERIO, "preco");
+         resultado.forEach(System.out::println);
+    }
 }
