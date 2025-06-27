@@ -4,8 +4,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +18,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString(exclude = {"livros"})
+@EntityListeners(AuditingEntityListener.class)
 public class Autor {
 
     @Id
@@ -35,4 +40,15 @@ public class Autor {
     //        fetch = FetchType.EAGER) sempre que carregar os autores empre traga os autores com ele (join)
                 fetch =  FetchType.LAZY)
     private List<Livro> livros;
+
+    @CreatedDate //toda vez que persistir ele coloca a dta e hora atual no campo
+    @Column(name = "data_cadastro")
+    private LocalDateTime dataCadastro;
+
+    @LastModifiedDate //toda vez que fazer um update ele atualiza automaticamente
+    @Column(name = "data_atualizacao")
+    private LocalDateTime dataAtualizacao;
+
+    @Column(name = "id_usuario")
+    private UUID idUsuario;
 }
