@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/autores")
@@ -76,7 +78,7 @@ public class AutorController {
         // Neste caso, retorna uma resposta HTTP 404 (Not Found - Não Encontrado) sem corpo.
         return ResponseEntity.notFound().build();
     }
-    
+
     /**
      * Endpoint para deletar um autor específico pelo seu ID.
      * Será acionado por uma requisição HTTP DELETE.
@@ -105,6 +107,36 @@ public class AutorController {
         // Após deletar com sucesso, retorna um status HTTP 204 (No Content).
         // Este é o status padrão para indicar que a operação foi bem-sucedida e não há conteúdo para retornar.
         return ResponseEntity.noContent().build();
+        }
+
+    /**
+     * Endpoint para pesquisar autores. Suporta filtros opcionais por nome e nacionalidade.
+     * Responde a requisições GET na raiz do recurso (ex: /autores).
+     */
+
+        @GetMapping
+        public ResponseEntity<List<AutorDTO>> pesquisar(
+
+                // @RequestParam pega parâmetros da query string do URL (ex: ?nome=Machado).
+                // "required = false" torna o parâmetro opcional. Se não for enviado, a variável fica como 'null'.
+              @RequestParam(value = "nome", required = false)  String nome,
+              @RequestParam(value = "nacionalidade", required = false) String nacionalidade){
+
+            // 1. Delega a lógica da busca para a camada de serviço, passando os filtros recebidos.
+            List<Autor> resultado = autorService.pesquisa(nome,nacionalidade);
+
+            // 2. Converte a lista de entidades 'Autor' para uma lista de 'AutorDTO'.
+            List<AutorDTO> lista = resultado
+                    .stream()// Converte a lista em um fluxo (stream) para processamento funcional.
+                    .map(autor -> new AutorDTO( // Para cada objeto 'autor' no fluxo, mapeia (transforma) ele em um 'AutorDTO'.
+                            autor.getId(),
+                            autor.getNome(),
+                            autor.getDataNascimento(),
+                            autor.getNacionalidade()))
+                    .collect(Collectors.toList());// Coleta todos os 'AutorDTO' criados e os agrupa em uma nova lista.
+
+            // 3. Retorna a lista de DTOs no corpo da resposta com um status HTTP 200 (OK).
+            return ResponseEntity.ok(lista);
         }
     }
 

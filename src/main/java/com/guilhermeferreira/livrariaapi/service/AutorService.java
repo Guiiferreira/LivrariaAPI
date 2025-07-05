@@ -4,6 +4,7 @@ import com.guilhermeferreira.livrariaapi.model.Autor;
 import com.guilhermeferreira.livrariaapi.repository.AutorRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 /**
@@ -38,6 +39,27 @@ public class AutorService {
     public void deletar(Autor autor){
         autorRepository.delete(autor);
     }
-}
+
+    public List<Autor> pesquisa(String nome, String nacionalidade){
+        // Verifica se ambos os filtros foram preenchidos.
+    if(nome != null && nacionalidade != null) {
+        // Se sim, chama o metodo do repositório que busca por ambos os campos.
+        return autorRepository.findByNomeAndNacionalidade(nome, nacionalidade);
+            }
+        // Se o de cima for falso, verifica se apenas o nome foi preenchido.
+            if (nome != null){
+                // Se sim, chama o metodo do repositório que busca apenas por nome.
+                return autorRepository.findByNome(nome);
+            }
+            if (nacionalidade != null){
+                return autorRepository.findByNacionalidade(nacionalidade);
+            }
+
+        // Se nenhum 'if' acima for verdadeiro, significa que nenhum filtro foi passado.
+        // Nesse caso, retorna todos os autores do banco de dados.
+            return autorRepository.findAll();
+        }
+    }
+
 
 
