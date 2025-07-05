@@ -32,4 +32,12 @@ public class AutorService {
     public Optional<Autor> obterPorId(UUID id){
         return autorRepository.findById(id);
     }
+
+
+
+    public void deletar(Autor autor){
+        autorRepository.delete(autor);
+    }
 }
+
+

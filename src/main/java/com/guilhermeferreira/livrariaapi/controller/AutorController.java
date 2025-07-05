@@ -76,5 +76,35 @@ public class AutorController {
         // Neste caso, retorna uma resposta HTTP 404 (Not Found - Não Encontrado) sem corpo.
         return ResponseEntity.notFound().build();
     }
+    
+    /**
+     * Endpoint para deletar um autor específico pelo seu ID.
+     * Será acionado por uma requisição HTTP DELETE.
+     */
+    @DeleteMapping("{id}")// Mapeia requisições HTTP do tipo DELETE para URLs com um ID (ex: DELETE /autores/algum-id).
+    public ResponseEntity<Void> deletar(@PathVariable("id") String id){ // O retorno é ResponseEntity<Void>, indicando que não haverá corpo na resposta de sucesso.
+        // Converte o ID que veio do URL (String) para o tipo UUID.
+        var idAutor = UUID.fromString(id);
 
-}
+        // Usa o serviço para buscar o autor no banco de dados antes de tentar deletá-lo.
+        Optional<Autor> autorOptional = autorService.obterPorId(idAutor);
+
+        // Verifica se o Optional está vazio, ou seja, se o autor NÃO foi encontrado.
+        // Usar .isEmpty() é uma forma clara e moderna de fazer essa checagem.
+        if (autorOptional.isEmpty()) {
+
+            // Se o autor não existe, não há o que deletar. Retorna um status HTTP 404 (Not Found).
+            return ResponseEntity.notFound().build();
+
+        }
+        // Se o código chegou até aqui, significa que o autor foi encontrado.
+        // O metodo .get() extrai o objeto Autor de dentro do Optional...
+        // ...e o passa para o serviço realizar a operação de exclusão no banco de dados.
+        autorService.deletar(autorOptional.get());
+
+        // Após deletar com sucesso, retorna um status HTTP 204 (No Content).
+        // Este é o status padrão para indicar que a operação foi bem-sucedida e não há conteúdo para retornar.
+        return ResponseEntity.noContent().build();
+        }
+    }
+
